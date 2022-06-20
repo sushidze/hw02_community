@@ -32,7 +32,3 @@ class Post(models.Model):
     class Meta:
         ordering = ['-pub_date']
 
-    def empty(self, *args, **kwargs):
-        if not self.text:
-            self.text = None
-        super(Post, self).save(*args, **kwargs)
