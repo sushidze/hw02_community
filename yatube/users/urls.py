@@ -25,7 +25,7 @@ urlpatterns = [
         'password_change/done/', PasswordChangeDoneView.as_view(), name='password_change_done'
     ),
     path(
-        'password_reset', PasswordResetView.as_view(), name='password_reset_form'
+        'password_reset/', PasswordResetView.as_view(), name='password_reset_form'
     ),
     path(
         'password_reset/done/', PasswordResetDoneView.as_view(), name='password_reset_done'
