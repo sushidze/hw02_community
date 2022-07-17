@@ -8,11 +8,6 @@
     <h3>Всего постов: {{ posts.count }} </h3>
     <article>
       {% for post in page_obj %}
-        <ul>
-          <li>
-            Автор: {{author.get_full_name}}
-            <a href="{% url 'posts:profile' post.author.username %}">все посты пользователя</a>
-          </li>
           <li>
             Дата публикации: {{ post.pub_date|date:"d E Y" }}
           </li>
