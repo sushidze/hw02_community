@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-  Пост {{ post.text|truncatewords:settings.CHARS_LIMIT }}
+  Пост {{ post.text|truncatewords:30 }}
 {% endblock %}
 {% block content %}
   <div class="row">
@@ -34,6 +34,9 @@
       <p>
         {{ post.text }}
       </p>
+      <a class="btn btn-primary" href="{% url 'posts:post_edit' post.pk %}">
+        редактировать запись
+      </a>
     </article>
   </div>
 {% endblock %}

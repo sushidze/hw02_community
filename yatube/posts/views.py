@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
 from .forms import PostForm
 from .models import Post, Group, User
@@ -70,7 +70,7 @@ def post_create(request):
             post = form.save(commit=False)
             post.author = request.user
             form.save()
-            return HttpResponseRedirect(f'/profile/{request.user.username}/')
+            return redirect('posts:profile', request.user.username)
         return render(request, template, {'form': form})
     form = PostForm()
     return render(request, template, {'form': form})
@@ -80,14 +80,22 @@ def post_edit(request, post_id):
     template = 'posts/create_post.html'
     post = get_object_or_404(Post, pk=post_id)
     is_edit = True
-    if post.author == request.user:
+    if request.user.id == post.author.id:
         if request.method == 'POST':
             form = PostForm(request.POST, instance=post)
             if form.is_valid():
-                form.save()
-                return HttpResponseRedirect(f'/profile/{request.user.username}/')
-            return render(request, template, {'form': form, 'is_edit': is_edit})
-    else:
-        return HttpResponseRedirect(f'/posts/{post_id}/')
-    form = PostForm(instance=post)
-    return render(request, template, {'form': form})
+                post = form.save()
+                return redirect('posts:post_detail', post.id)
+            context = {
+                'form': form,
+                'post': post,
+                'is_edit': is_edit
+            }
+            return render(request, template, context)
+        form = PostForm(instance=post)
+        context = {
+            'form': form,
+            'is_edit': is_edit
+        }
+        return render(request, template, context)
+
